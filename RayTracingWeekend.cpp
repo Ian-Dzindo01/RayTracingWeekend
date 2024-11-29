@@ -5,20 +5,45 @@
 #include <iostream>
 
 
-bool hit_sphere(const point3& center, double radius, const ray& r) {
+
+//P(t) = orig + t*dir - ray
+//a*t2 + bt + c = 0
+double hit_sphere(const point3& center, double radius, const ray& r) {
+
+    // Ray origin to sphere center
     vec3 oc = center - r.origin();
+
+    // Squared length of ray's direction vector
     auto a = dot(r.direction(), r.direction());
+
+    // Solving intersection
     auto b = -2.0 * dot(r.direction(), oc);
     auto c = dot(oc, oc) - radius * radius;
+    // Squared root
     auto discriminant = b * b - 4 * a * c;
-    return (discriminant >= 0);
+
+    // Discriminant < 0 - No intersection
+    // Discriminant = 0 - Tangent intersection
+    // Discriminant > 0 - Two intersections
+
+    // Determines if ray intersects sphere
+    if (discriminant < 0) {
+        return -1.0;
+    }
+    else {
+        // Nearest interesection point (smaller t) from quadratic formula 
+        return (-b - std::sqrt(discriminant)) / (2.0 * a);
+    }
 }
 
 // Create sky gradient background
 color ray_color(const ray& r) {
 
-    if (hit_sphere(point3(0, 0, -1), 0.5, r))
-        return color(1, 0, 0);
+    auto t = hit_sphere(point3(0, 0, -1), 0.5, r);
+    if (t > 0.0) {
+        vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
+        return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
+    }
 
     // Extract direction vector of ray
     vec3 unit_direction = unit_vector(r.direction());
