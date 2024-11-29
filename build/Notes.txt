@@ -1,0 +1,4 @@
+cmake -B build
+cmake --build build
+build\Debug\RayTracingWeekend.exe > image.ppm
+build\Debug\RayTracingWeekend.exe | set-content image.ppm -encoding String
