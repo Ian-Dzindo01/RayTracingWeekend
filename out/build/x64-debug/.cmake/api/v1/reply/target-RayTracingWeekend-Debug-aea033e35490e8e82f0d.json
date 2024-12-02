@@ -104,7 +104,8 @@
 			"sourceIndexes" : 
 			[
 				1,
-				2
+				2,
+				3
 			]
 		}
 	],
@@ -124,6 +125,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "hittable.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "sphere.h",
 			"sourceGroupIndex" : 1
 		}
 	],
