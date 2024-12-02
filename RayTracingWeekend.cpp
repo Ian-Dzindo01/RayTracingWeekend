@@ -14,13 +14,13 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = center - r.origin();
 
     // Squared length of ray's direction vector
-    auto a = dot(r.direction(), r.direction());
+    auto a = r.direction().length_squared();
 
     // Solving intersection
-    auto b = -2.0 * dot(r.direction(), oc);
-    auto c = dot(oc, oc) - radius * radius;
+    auto h = dot(r.direction(), oc);
+    auto c = oc.length_squared() - radius * radius;
     // Squared root
-    auto discriminant = b * b - 4 * a * c;
+    auto discriminant = h * h - a * c;
 
     // Discriminant < 0 - No intersection
     // Discriminant = 0 - Tangent intersection
@@ -32,7 +32,7 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     }
     else {
         // Nearest interesection point (smaller t) from quadratic formula 
-        return (-b - std::sqrt(discriminant)) / (2.0 * a);
+        return (h - std::sqrt(discriminant)) / a;
     }
 }
 
